@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="str1">来了老弟!</string>
+    <string name="tm_tittle">摄氏度转华氏度</string>
+    <string name="tm_cul">换算</string>
+    <string name="tm_hint">请输入摄氏度：</string>
+    <string name="tm_dig">0123456789.</string>
 </resources>
