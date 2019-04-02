@@ -6,4 +6,8 @@
     <string name="tm_hint">请输入摄氏度：</string>
     <string name="tm_dig">0123456789.</string>
     <string name="tm_wel">Hello World</string>
+    <string name="btn_add3">point:+3</string>
+    <string name="btn_add2">point:+2</string>
+    <string name="btn_add1">point:+1</string>
+    <string name="btn_re">reset</string>
 </resources>
