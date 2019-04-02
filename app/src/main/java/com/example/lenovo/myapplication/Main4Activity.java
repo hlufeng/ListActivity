@@ -1,5 +1,6 @@
 package com.example.lenovo.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,5 +34,9 @@ public class Main4Activity extends AppCompatActivity {
             }
             oup.setText(""+Math.round(100*ff)/100f);
         }
+    }
+    public void open_score(View btn){
+        Intent score =new Intent(this,Main3Activity.class);
+        startActivity(score);
     }
 }
