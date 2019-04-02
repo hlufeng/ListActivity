@@ -10,4 +10,8 @@
     <string name="btn_add2">point:+2</string>
     <string name="btn_add1">point:+1</string>
     <string name="btn_re">reset</string>
+    <string name="hl_hint">请输入人民币金额:</string>
+    <string name="hl_dollor">美元</string>
+    <string name="hl_ero">英镑</string>
+    <string name="hl_hy">韩元</string>
 </resources>

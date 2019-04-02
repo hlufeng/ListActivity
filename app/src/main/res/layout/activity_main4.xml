@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Main4Activity">
+
+    <EditText
+        android:id="@+id/hl_inp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/hl_hint"
+        android:layout_marginTop="25sp"
+        android:textSize="35sp"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:id="@+id/hl_oup"
+        android:textSize="25sp"
+        android:layout_marginTop="25sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tm_cul" />
+
+    <Button
+        android:id="@+id/hl_dollor"
+        android:layout_marginTop="25sp"
+        android:layout_width="match_parent"
+        android:onClick="onClick"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+
+        android:text="@string/hl_dollor" />
+
+    <Button
+        android:id="@+id/hl_ero"
+        android:layout_marginTop="15sp"
+        android:textSize="25sp"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hl_ero" />
+
+    <Button
+        android:id="@+id/hl_hy"
+        android:layout_width="match_parent"
+        android:layout_marginTop="15sp"
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:layout_height="wrap_content"
+        android:text="@string/hl_hy" />
+</LinearLayout>
