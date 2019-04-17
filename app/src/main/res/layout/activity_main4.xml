@@ -58,9 +58,9 @@
     <Button
         android:id="@+id/btn_intent"
         android:layout_width="match_parent"
-        android:layout_marginTop="35sp"
-        android:textSize="25sp"
-        android:onClick="open_score"
         android:layout_height="wrap_content"
-        android:text="@string/score" />
+        android:layout_marginTop="35sp"
+        android:onClick="open_config"
+        android:text="@string/config"
+        android:textSize="25sp" />
 </LinearLayout>
