@@ -9,6 +9,7 @@ import android.widget.TextView;
 public class Main3Activity extends AppCompatActivity {
     TextView score;
     TextView score2;
+    public final String TAG="Main3Activity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +17,59 @@ public class Main3Activity extends AppCompatActivity {
         score=(TextView) findViewById(R.id.Socre);
         score2=(TextView) findViewById(R.id.Socre2);
     }
+
+    @Override
+    protected void onStart() {
+        Log.i(TAG, "onStart: ");
+        super.onStart();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("teama_score",score.getText().toString());
+        outState.putString("teamb_score",score2.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String teama_score=savedInstanceState.get("teama_score").toString();
+        String teamb_score=savedInstanceState.get("teamb_score").toString();
+        score.setText(teama_score);
+        score2.setText(teamb_score);
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume: ");
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart: ");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy: ");
+        super.onDestroy();
+    }
+
     public void btnAdd3(View btn){
         if(btn.getId()==R.id.btn_3){
             showscore(3);

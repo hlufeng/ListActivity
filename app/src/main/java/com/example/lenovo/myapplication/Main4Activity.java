@@ -15,13 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class Main4Activity extends AppCompatActivity implements Runnable {
     EditText inp;
@@ -46,20 +48,24 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
         hyrate=sharedPreferences.getFloat("rate_hy",1/500f);
         Log.i(TAG, "onCreate: sharedPreferences获取成功");
 
-        //开启子线程
-        Thread t = new Thread(this);
-        t.start();
-
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what==5){
-                    String str =(String)msg.obj;
-                    Log.i(TAG, "handleMessage: str:"+str);
+                    Bundle bdl=(Bundle)msg.obj;
+//                    String str =(String)msg.obj;
+                    dollorrate=bdl.getFloat("dollor_rate");
+                    erorate=bdl.getFloat("ero_rate");
+                    hyrate=bdl.getFloat("hy_rate");
+                    Log.i(TAG, "handleMessage: dr:"+dollorrate+"er:"+erorate+"hr:"+hyrate);
                 }
                 super.handleMessage(msg);
             }
         };
+        //开启子线程
+        Thread t = new Thread(this);
+        t.start();
+
     }
     public void onClick(View btn){
         String in=inp.getText().toString();
@@ -69,11 +75,11 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
             float f=Float.parseFloat(in);
             float ff=0;
             if(btn.getId()==R.id.hl_dollor){
-                ff=f*=(1/dollorrate);
+                ff=f*=(dollorrate);
             }else if (btn.getId()==R.id.hl_ero){
-                ff=f*=(1/erorate);
+                ff=f*=(erorate);
             }else {
-                ff=f*=(1/hyrate);
+                ff=f*=(hyrate);
             }
             oup.setText(""+Math.round(100*ff)/100f);
         }
@@ -140,26 +146,64 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
 //                e.printStackTrace();
 //            }
 //        }
+        Bundle bundle =new Bundle();
 
-        //创建消息，用来告知主进程
-        Message msg =handler.obtainMessage(5);
-        //上面括号里的5等价于msg.what(5);
-        msg.obj="我的小obj!";
-        handler.sendMessage(msg);
-
-        //获取网页
-        URL url = null;
+        //获取网页1.0
+//        URL url = null;
+//        try {
+//            url = new URL("http://www.usd-cny.com/icbc.htm");
+//            HttpURLConnection http =(HttpURLConnection)url.openConnection();
+//            InputStream in = http.getInputStream();
+//            String html = inputStream2String(in);
+//            Log.i(TAG, "run: html:"+html);
+//            Document doc =Jsoup.parse(html);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        //获取网页2.0
+        Document doc = null;
         try {
-            url = new URL("www.usd-cny.com/icbc.htm");
-            HttpURLConnection http =(HttpURLConnection)url.openConnection();
-            InputStream in = http.getInputStream();
-            String html = inputStream2String(in);
-            Log.i(TAG, "run: html:"+html);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
+            Log.i(TAG, "run: "+doc.title());
+            Elements tables =doc.getElementsByTag("table");
+//            遍历table，看所需的内容在第几个table中
+//            int i=1;
+//            for(Element table:tables){
+//                Log.i(TAG, "run: table["+i+"]"+table);
+//                i++;
+//            }
+            Element table1=tables.get(0);
+
+            Elements tds=table1.getElementsByTag("td");
+            for(int i=0;i<tds.size();i+=6){
+                Element td1 =tds.get(i);
+                Element td2 =tds.get(i+5);
+                Log.i(TAG, "run: textname:"+td1.text());
+                Log.i(TAG, "run: texthl:"+td2.text());
+                String str =td1.text();
+                String val =td2.text();
+                if("美元".equals(str)){
+                    bundle.putFloat("dollor_rate",100f/Float.parseFloat(val));
+                }else if ("欧元".equals(str)){
+                    bundle.putFloat("ero_rate",100f/Float.parseFloat(val));
+                }else if ("韩元".equals(str)){
+                    bundle.putFloat("hy_rate",100f/Float.parseFloat(val));
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //创建消息，用来告知主进程
+        Message msg =handler.obtainMessage(5);
+//        Log.i(TAG, "run: "+handler);
+        //上面括号里的5等价于msg.what(5);
+//        msg.obj="我的小obj!";
+        msg.obj=bundle;
+        handler.sendMessage(msg);
+
     }
 
     private String inputStream2String(InputStream inputStream) throws IOException {
