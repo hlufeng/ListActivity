@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Main4Activity extends AppCompatActivity implements Runnable {
     EditText inp;
@@ -31,6 +34,7 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
     float dollorrate;
     float erorate;
     float hyrate;
+    private String updateDate="";
     public final String TAG ="Main4Activity";
     Handler handler;
     @Override
@@ -46,7 +50,22 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
         dollorrate=sharedPreferences.getFloat("rate_dollor",6.7f);
         erorate=sharedPreferences.getFloat("rate_ero",11f);
         hyrate=sharedPreferences.getFloat("rate_hy",1/500f);
+        updateDate=sharedPreferences.getString("update_date","");
         Log.i(TAG, "onCreate: sharedPreferences获取成功");
+
+        //获取当前系统时间
+        Date today=Calendar.getInstance().getTime();
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        final String todayStr =sdf.format(today);
+
+        if(!todayStr.equals(updateDate)){
+            Log.i(TAG, "onCreate: 需要更新");
+            //开启子线程
+            Thread t = new Thread(this);
+            t.start();
+        }else {
+            Log.i(TAG, "onCreate: 不需要更新");
+        }
 
         handler = new Handler(){
             @Override
@@ -58,13 +77,18 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
                     erorate=bdl.getFloat("ero_rate");
                     hyrate=bdl.getFloat("hy_rate");
                     Log.i(TAG, "handleMessage: dr:"+dollorrate+"er:"+erorate+"hr:"+hyrate);
+                    //保存更新的日期
+                    SharedPreferences sharedPreferences = getSharedPreferences("myrate",MODE_PRIVATE);
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("update_date",todayStr);
+                    editor.putFloat("rate_dollor",dollorrate);
+                    editor.putFloat("rate_ero",erorate);
+                    editor.putFloat("rate_hy",hyrate);
+                    editor.apply();
                 }
                 super.handleMessage(msg);
             }
         };
-        //开启子线程
-        Thread t = new Thread(this);
-        t.start();
 
     }
     public void onClick(View btn){
@@ -109,6 +133,10 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.menu){
             getConfig();
+        }else if (item.getItemId()==R.id.open_list){
+            //打开窗口列表
+            Intent list =new Intent(this,MyListActivity.class);
+            startActivity(list);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -163,6 +191,19 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
 //            e.printStackTrace();
 //        }
         //获取网页2.0
+        bundle=getFromBOC();
+        //创建消息，用来告知主进程
+        Message msg =handler.obtainMessage(5);
+//        Log.i(TAG, "run: "+handler);
+        //上面括号里的5等价于msg.what(5);
+//        msg.obj="我的小obj!";
+        msg.obj=bundle;
+        handler.sendMessage(msg);
+
+    }
+
+    private Bundle getFromBOC() {
+        Bundle bundle = new Bundle();
         Document doc = null;
         try {
             doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
@@ -196,14 +237,7 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //创建消息，用来告知主进程
-        Message msg =handler.obtainMessage(5);
-//        Log.i(TAG, "run: "+handler);
-        //上面括号里的5等价于msg.what(5);
-//        msg.obj="我的小obj!";
-        msg.obj=bundle;
-        handler.sendMessage(msg);
-
+        return bundle;
     }
 
     private String inputStream2String(InputStream inputStream) throws IOException {

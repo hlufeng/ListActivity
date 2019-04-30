@@ -17,4 +17,5 @@
     <string name="score">转到两队计分页面</string>
     <string name="config">设置汇率</string>
     <string name="config_save">保存</string>
+    <string name="label_open_list">OpenList</string>
 </resources>
