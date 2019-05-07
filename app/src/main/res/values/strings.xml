@@ -18,4 +18,7 @@
     <string name="config">设置汇率</string>
     <string name="config_save">保存</string>
     <string name="label_open_list">OpenList</string>
+    <string name="RateCalc_inp">请输入要兑换的RMB金额：</string>
+    <string name="RateCalc_title">币种</string>
+    <string name="RateCalc_oup">兑换结果</string>
 </resources>

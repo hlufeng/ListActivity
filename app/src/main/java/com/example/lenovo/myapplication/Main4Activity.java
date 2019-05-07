@@ -135,7 +135,7 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
             getConfig();
         }else if (item.getItemId()==R.id.open_list){
             //打开窗口列表
-            Intent list =new Intent(this,MyListActivity.class);
+            Intent list =new Intent(this,MyList2Activity.class);
             startActivity(list);
         }
         return super.onOptionsItemSelected(item);
