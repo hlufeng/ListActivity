@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MyListActivity">
 
-    <ListView
+    <GridView
         android:id="@+id/mylist"
+        android:numColumns="3"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    </GridView>
+    <TextView
+        android:id="@+id/nodata"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="no data"
         android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>
