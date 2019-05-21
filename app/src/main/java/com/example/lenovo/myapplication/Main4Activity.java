@@ -1,5 +1,6 @@
 package com.example.lenovo.myapplication;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class Main4Activity extends AppCompatActivity implements Runnable {
     EditText inp;
@@ -135,8 +137,21 @@ public class Main4Activity extends AppCompatActivity implements Runnable {
             getConfig();
         }else if (item.getItemId()==R.id.open_list){
             //打开窗口列表
-            Intent list =new Intent(this,MyList2Activity.class);
+//            Intent list =new Intent(this,MyList2Activity.class);
+            Intent list =new Intent(this,RateListActivity.class);
             startActivity(list);
+//            //测试数据库
+//            RateItem item1 =new RateItem("aaa","123");
+//            RateManager manager =new RateManager(this);
+//            manager.add(item1);
+//            manager.add(new RateItem("bbb","23.5"));
+//            Log.i(TAG, "onOptionsItemSelected: 写入数据完毕");
+//
+//            //查询所有数据
+//            List<RateItem> testList=manager.listAll();
+//            for(RateItem i:testList){
+//                Log.i(TAG, "onOptionsItemSelected: 取出数据[id="+i.getId()+"],Name="+i.getCurName()+",Rate="+i.getCurRate());
+//            }
         }
         return super.onOptionsItemSelected(item);
     }
